@@ -117,4 +117,17 @@ public class DiceCalculationController {
         model.addAttribute("calculations", service.buscarProbabilidadeMaiorQue(prob));
         return "calculations/list";
     }
+
+    // PESQUISAR por ID
+    @GetMapping("/calculations/pesquisar")
+    public String pesquisarPorId(@RequestParam Long id, Model model) {
+        DiceCalculation calculation = service.buscar(id);
+        if (calculation != null) {
+            model.addAttribute("calculations", List.of(calculation));
+        } else {
+            model.addAttribute("calculations", List.of());
+            model.addAttribute("error", "Cálculo com ID " + id + " não encontrado!");
+        }
+        return "calculations/list";
+    }
 }
