@@ -19,27 +19,27 @@ public class DiceCalculationController {
         this.service = service;
     }
 
-    // PÁGINA INICIAL (raiz)
+    // Pagina inicial
     @GetMapping("/")
     public String home() {
         return "redirect:/calculations";
     }
 
-    // LISTAR todos
+    // Listar
     @GetMapping("/calculations")
     public String listar(Model model) {
         model.addAttribute("calculations", service.listar());
         return "calculations/list";
     }
 
-    // FORMULÁRIO novo
+    // Formulario
     @GetMapping("/calculations/novo")
     public String novoForm(Model model) {
         model.addAttribute("calculation", new DiceCalculation());
         return "calculations/form";
     }
 
-    // CRIAR novo
+    // Criar nova entrada
     @PostMapping("/calculations")
     public String adicionar(@Valid @ModelAttribute DiceCalculation calculation,
                             BindingResult result, Model model) {
@@ -55,7 +55,7 @@ public class DiceCalculationController {
         }
     }
 
-    // EDITAR formulário
+    // Editar entrada (mesmo id)
     @GetMapping("/calculations/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
         DiceCalculation calculation = service.buscar(id);
@@ -66,14 +66,14 @@ public class DiceCalculationController {
         return "calculations/form";
     }
 
-    // EXCLUIR
+    // Ecluir entrada
     @GetMapping("/calculations/remover/{id}")
     public String remover(@PathVariable Long id) {
         service.remover(id);
         return "redirect:/calculations";
     }
 
-    // ATUALIZAR (para quando editar e salvar)
+    // Atualizar (para quando editar e salvar)
     @PostMapping("/calculations/atualizar/{id}")
     public String atualizar(@PathVariable Long id,
                             @Valid @ModelAttribute DiceCalculation calculation,
