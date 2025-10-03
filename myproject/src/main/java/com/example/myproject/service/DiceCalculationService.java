@@ -4,7 +4,6 @@ import com.example.myproject.model.DiceCalculation;
 import com.example.myproject.repository.DiceCalculationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DiceCalculationService {
@@ -15,7 +14,7 @@ public class DiceCalculationService {
         this.repository = repository;
     }
 
-    // CRUD Básico (mantenha igual)
+    // CRUD Básico
     public List<DiceCalculation> listar() {
         return repository.findAllByOrderByCreatedAtDesc();
     }
@@ -41,8 +40,6 @@ public class DiceCalculationService {
                     calculo.setCalculationType(calculoAtualizado.getCalculationType());
                     calculo.setMinWidth(calculoAtualizado.getMinWidth());
                     calculo.setMinHeight(calculoAtualizado.getMinHeight());
-                    calculo.setSpecificAmount(calculoAtualizado.getSpecificAmount());
-                    calculo.setSpecificWidth(calculoAtualizado.getSpecificWidth());
 
                     calculo.setProbability(calcularProbabilidade(calculoAtualizado));
                     return repository.save(calculo);
@@ -50,48 +47,20 @@ public class DiceCalculationService {
                 .orElse(null);
     }
 
-    // MÉTODOS DE BUSCA (mantenha iguais)
+    // MÉTODOS DE BUSCA
     public List<DiceCalculation> buscarPorTipo(String tipo) {
         return repository.findByCalculationType(tipo);
     }
 
-    public List<DiceCalculation> buscarPorDados(Integer numDados) {
-        return repository.findByNumDice(numDados);
-    }
-
-    public List<DiceCalculation> buscarPorLados(Integer numLados) {
-        return repository.findByNumSides(numLados);
-    }
-
-    public List<DiceCalculation> buscarProbabilidadeMaiorQue(Double probabilidade) {
-        return repository.findByProbabilityGreaterThan(probabilidade);
-    }
-
-    public List<DiceCalculation> buscarProbabilidadeEntre(Double min, Double max) {
-        return repository.findByProbabilityBetween(min, max);
-    }
-
-    public List<DiceCalculation> buscarPorLargura(Integer largura) {
-        return repository.findByMinWidth(largura);
-    }
-
-    public List<DiceCalculation> buscarPorAltura(Integer altura) {
-        return repository.findByMinHeight(altura);
+    public List<DiceCalculation> ordenarPorId() {
+        return repository.findAllByOrderByIdDesc();
     }
 
     public List<DiceCalculation> ordenarPorProbabilidade() {
         return repository.findAllByOrderByProbabilityDesc();
     }
 
-    public List<DiceCalculation> buscarCalculosComplexos(Integer minDados, Double minProb) {
-        return repository.buscarCalculosComplexos(minDados, minProb);
-    }
-
-    public List<DiceCalculation> buscarPorTipoEDados(String tipo, Integer dados) {
-        return repository.buscarPorTipoEDados(tipo, dados);
-    }
-
-    // CÁLCULO DE PROBABILIDADE - FUNÇÕES PYTHON TRADUZIDAS
+    // Calculos de Verdade!!!!
     private Double calcularProbabilidade(DiceCalculation calc) {
         try {
             switch(calc.getCalculationType()) {
@@ -105,10 +74,6 @@ public class DiceCalculationService {
                     return probMinWidthAndHeight(calc.getNumDice(), calc.getNumSides(),
                             calc.getMinWidth() != null ? calc.getMinWidth() : 2,
                             calc.getMinHeight() != null ? calc.getMinHeight() : 1);
-                case "specific":
-                    return probSpecificMatches(calc.getNumDice(), calc.getNumSides(),
-                            calc.getSpecificAmount() != null ? calc.getSpecificAmount() : 1,
-                            calc.getSpecificWidth() != null ? calc.getSpecificWidth() : 2);
                 default:
                     return 0.0;
             }
@@ -117,9 +82,9 @@ public class DiceCalculationService {
         }
     }
 
-    // === FUNÇÕES PYTHON TRADUZIDAS FIELMENTE ===
+    // Funções em si
 
-    // permutation - exata igual ao Python
+    // permutation
     private long perm(int a, int b) {
         if (b < 0 || b > a) return 0;
         long result = 1;
@@ -129,33 +94,12 @@ public class DiceCalculationService {
         return result;
     }
 
-    // combination - exata igual ao Python
+    // combination
     private long comb(int a, int b) {
         return perm(a, b) / perm(b, b);
     }
 
-    // probability of specific number of matches - exata igual ao Python
-    private double probSpecificMatches(int n, int d, int amount, int width) {
-        int unusedDice = n;
-        int unusedHeight = d;
-        double result = 1;
-
-        // Para um único match (simplificado do Python)
-        if (unusedDice < amount * width) {
-            return 0.0;
-        }
-        result *= comb(unusedHeight, amount);
-        unusedHeight -= amount;
-        for (int i = 1; i <= amount; i++) {
-            result *= comb(unusedDice, width);
-            unusedDice -= width;
-        }
-
-        result *= perm(unusedHeight, unusedDice) / Math.pow(d, n);
-        return result;
-    }
-
-    // probability of at least 1 match of at least 'h' height - exata igual ao Python
+    // probability of at least 1 match of at least 'h' height
     private double probMinHeight(int n, int d, int h) {
         double probTotal = 0;
         int validH = d - h + 1;
@@ -167,7 +111,7 @@ public class DiceCalculationService {
         return probTotal;
     }
 
-    // probability of at least 1 match of at least 'w' width - exata igual ao Python
+    // probability of at least 1 match of at least 'w' width
     private long probMinWidthAux(int n, int d, int w) {
         if (n <= 0) {
             return 1;
@@ -193,7 +137,7 @@ public class DiceCalculationService {
         return 1 - ((double) valid / Math.pow(d, n));
     }
 
-    // probability of at least 1 match of at least 'w' width AND 'h' height - exata igual ao Python
+    // probability of at least 1 match of at least 'w' width AND 'h' height
     private long probMinWidthAndHeightAux(int n, int d, int w, int h) {
         if (n == 0) {
             return 1;

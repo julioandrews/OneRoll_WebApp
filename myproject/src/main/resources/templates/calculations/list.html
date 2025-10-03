@@ -8,11 +8,10 @@
 <div class="container mt-5">
     <h1>Histórico de Cálculos</h1>
 
-    <!-- Alertas -->
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <!-- Formulário de Pesquisa por ID -->
+    <!-- Formulário de Pesquisa porID -->
     <form th:action="@{/calculations/pesquisar}" method="get" class="mb-4">
         <div class="row">
             <div class="col-md-4">
@@ -25,8 +24,9 @@
         </div>
     </form>
 
-    <!-- Botões de Busca Avançada -->
+    <!-- Botões de Busca -->
     <div class="mb-3">
+        <a th:href="@{/calculations/ordenar/id}" class="btn btn-outline-primary btn-sm">Ordenar por ID</a>
         <a th:href="@{/calculations/ordenar/probabilidade}" class="btn btn-outline-primary btn-sm">Ordenar por Probabilidade</a>
         <a th:href="@{/calculations/buscar/tipo?tipo=width}" class="btn btn-outline-secondary btn-sm">Só Largura</a>
         <a th:href="@{/calculations/buscar/tipo?tipo=height}" class="btn btn-outline-secondary btn-sm">Só Altura</a>
@@ -46,7 +46,6 @@
             <th>Tipo</th>
             <th>Largura</th>
             <th>Altura</th>
-            <th>Específico</th>
             <th>Probabilidade</th>
             <th>Data</th>
             <th>Ações</th>
@@ -61,15 +60,9 @@
                 <span th:if="${calc.calculationType == 'width'}" class="badge bg-primary">Largura</span>
                 <span th:if="${calc.calculationType == 'height'}" class="badge bg-success">Altura</span>
                 <span th:if="${calc.calculationType == 'both'}" class="badge bg-warning">Ambos</span>
-                <span th:if="${calc.calculationType == 'specific'}" class="badge bg-info">Específico</span>
             </td>
             <td th:text="${calc.minWidth} ?: '-'"></td>
             <td th:text="${calc.minHeight} ?: '-'"></td>
-            <td>
-                <span th:if="${calc.specificAmount != null and calc.specificWidth != null}"
-                      th:text="${calc.specificAmount} + 'x' + ${calc.specificWidth}"></span>
-                <span th:unless="${calc.specificAmount != null and calc.specificWidth != null}">-</span>
-            </td>
             <td th:text="${#numbers.formatPercent(calc.probability, 1, 2)}"></td>
             <td th:text="${#temporals.format(calc.createdAt, 'dd/MM/yy HH:mm')}"></td>
             <td>
@@ -82,7 +75,10 @@
         </tbody>
     </table>
 
-    <a th:href="@{/calculations/novo}" class="btn btn-primary">Novo Cálculo</a>
+    <div class="mt-3">
+        <a th:href="@{/calculations/novo}" class="btn btn-primary">Novo Cálculo</a>
+        <a th:href="@{/}" class="btn btn-secondary">Página Inicial</a>
+    </div>
 </div>
 </body>
 </html>

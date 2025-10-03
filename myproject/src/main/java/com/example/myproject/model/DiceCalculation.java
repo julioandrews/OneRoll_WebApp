@@ -22,16 +22,11 @@ public class DiceCalculation {
     private Integer numSides;
 
     @NotBlank(message = "Tipo de cálculo é obrigatório!")
-    private String calculationType; // "width", "height", "both", "specific"
+    private String calculationType;
 
+    // Campos condicionais
     private Integer minWidth;
     private Integer minHeight;
-
-    // Campos para matches específicos (simplificado)
-    @Column(columnDefinition = "TEXT")
-    private String specificMatchesJson;
-//    private Integer specificAmount;
-//    private Integer specificWidth;
 
     private Double probability;
     private LocalDateTime createdAt;
@@ -59,12 +54,6 @@ public class DiceCalculation {
 
     public Integer getMinHeight() { return minHeight; }
     public void setMinHeight(Integer minHeight) { this.minHeight = minHeight; }
-
-    public Integer getSpecificAmount() { return specificAmount; }
-    public void setSpecificAmount(Integer specificAmount) { this.specificAmount = specificAmount; }
-
-    public Integer getSpecificWidth() { return specificWidth; }
-    public void setSpecificWidth(Integer specificWidth) { this.specificWidth = specificWidth; }
 
     public Double getProbability() { return probability; }
     public void setProbability(Double probability) { this.probability = probability; }
