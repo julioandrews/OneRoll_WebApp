@@ -22,7 +22,7 @@ public class DiceCalculation {
     private Integer numSides;
 
     @NotBlank(message = "Tipo de cálculo é obrigatório!")
-    private String calculationType; // "width", "height", "both"
+    private String calculationType;
 
     // Campos condicionais
     private Integer minWidth;

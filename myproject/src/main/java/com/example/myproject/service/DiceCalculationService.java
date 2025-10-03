@@ -52,43 +52,15 @@ public class DiceCalculationService {
         return repository.findByCalculationType(tipo);
     }
 
-    public List<DiceCalculation> buscarPorDados(Integer numDados) {
-        return repository.findByNumDice(numDados);
-    }
-
-    public List<DiceCalculation> buscarPorLados(Integer numLados) {
-        return repository.findByNumSides(numLados);
-    }
-
-    public List<DiceCalculation> buscarProbabilidadeMaiorQue(Double probabilidade) {
-        return repository.findByProbabilityGreaterThan(probabilidade);
-    }
-
-    public List<DiceCalculation> buscarProbabilidadeEntre(Double min, Double max) {
-        return repository.findByProbabilityBetween(min, max);
-    }
-
-    public List<DiceCalculation> buscarPorLargura(Integer largura) {
-        return repository.findByMinWidth(largura);
-    }
-
-    public List<DiceCalculation> buscarPorAltura(Integer altura) {
-        return repository.findByMinHeight(altura);
+    public List<DiceCalculation> ordenarPorId() {
+        return repository.findAllByOrderByIdDesc();
     }
 
     public List<DiceCalculation> ordenarPorProbabilidade() {
         return repository.findAllByOrderByProbabilityDesc();
     }
 
-    public List<DiceCalculation> buscarCalculosComplexos(Integer minDados, Double minProb) {
-        return repository.buscarCalculosComplexos(minDados, minProb);
-    }
-
-    public List<DiceCalculation> buscarPorTipoEDados(String tipo, Integer dados) {
-        return repository.buscarPorTipoEDados(tipo, dados);
-    }
-
-    // CÁLCULO DE PROBABILIDADE
+    // Calculos de Verdade!!!!
     private Double calcularProbabilidade(DiceCalculation calc) {
         try {
             switch(calc.getCalculationType()) {
@@ -110,7 +82,7 @@ public class DiceCalculationService {
         }
     }
 
-    // === FUNÇÕES DE PROBABILIDADE ===
+    // Funções em si
 
     // permutation
     private long perm(int a, int b) {

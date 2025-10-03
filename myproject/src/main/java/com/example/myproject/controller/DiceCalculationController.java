@@ -104,20 +104,6 @@ public class DiceCalculationController {
         return "calculations/list";
     }
 
-    // BUSCAR por dados
-    @GetMapping("/calculations/buscar/dados")
-    public String buscarPorDados(@RequestParam Integer dados, Model model) {
-        model.addAttribute("calculations", service.buscarPorDados(dados));
-        return "calculations/list";
-    }
-
-    // BUSCAR por probabilidade maior que
-    @GetMapping("/calculations/buscar/probabilidade")
-    public String buscarProbabilidadeMaior(@RequestParam Double prob, Model model) {
-        model.addAttribute("calculations", service.buscarProbabilidadeMaiorQue(prob));
-        return "calculations/list";
-    }
-
     // PESQUISAR por ID
     @GetMapping("/calculations/pesquisar")
     public String pesquisarPorId(@RequestParam Long id, Model model) {
@@ -128,6 +114,13 @@ public class DiceCalculationController {
             model.addAttribute("calculations", List.of());
             model.addAttribute("error", "Cálculo com ID " + id + " não encontrado!");
         }
+        return "calculations/list";
+    }
+
+    // Ordenar
+    @GetMapping("/calculations/ordenar/id")
+    public String ordenarPorId(Model model) {
+        model.addAttribute("calculations", service.ordenarPorId());
         return "calculations/list";
     }
 }

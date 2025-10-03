@@ -8,11 +8,10 @@
 <div class="container mt-5">
     <h1>Histórico de Cálculos</h1>
 
-    <!-- Alertas -->
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <!-- Formulário de Pesquisa por ID -->
+    <!-- Formulário de Pesquisa porID -->
     <form th:action="@{/calculations/pesquisar}" method="get" class="mb-4">
         <div class="row">
             <div class="col-md-4">
@@ -25,8 +24,9 @@
         </div>
     </form>
 
-    <!-- Botões de Busca Avançada -->
+    <!-- Botões de Busca -->
     <div class="mb-3">
+        <a th:href="@{/calculations/ordenar/id}" class="btn btn-outline-primary btn-sm">Ordenar por ID</a>
         <a th:href="@{/calculations/ordenar/probabilidade}" class="btn btn-outline-primary btn-sm">Ordenar por Probabilidade</a>
         <a th:href="@{/calculations/buscar/tipo?tipo=width}" class="btn btn-outline-secondary btn-sm">Só Largura</a>
         <a th:href="@{/calculations/buscar/tipo?tipo=height}" class="btn btn-outline-secondary btn-sm">Só Altura</a>
